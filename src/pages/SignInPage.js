@@ -22,7 +22,8 @@ function SignInPage() {
         setErrorMessage('Google 로그인에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
-      setErrorMessage('로그인 중 오류가 발생했습니다: ' + error.message);
+      console.error('로그인 오류:', error);
+      setErrorMessage('로그인 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -41,13 +42,16 @@ function SignInPage() {
         setErrorMessage('Apple 로그인에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
-      setErrorMessage('로그인 중 오류가 발생했습니다: ' + error.message);
+      console.error('로그인 오류:', error);
+      setErrorMessage('로그인 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleContinueAsGuest = () => {
+    // 게스트 모드 활성화
+    localStorage.setItem('guestMode', 'true');
     navigate('/');
   };
 
@@ -61,16 +65,6 @@ function SignInPage() {
         </div>
 
         <div className="signin-buttons">
-          {/* Apple 로그인 버튼 */}
-          <button 
-            className="signin-button apple-button"
-            onClick={handleAppleSignIn}
-            disabled={loading}
-          >
-            <img src="/apple_logo.png" alt="Apple" className="button-icon" />
-            <span>Apple로 로그인</span>
-          </button>
-
           {/* Google 로그인 버튼 */}
           <button 
             className="signin-button google-button"
@@ -81,12 +75,23 @@ function SignInPage() {
             <span>Google로 로그인</span>
           </button>
 
+          {/* Apple 로그인 버튼 */}
+          <button 
+            className="signin-button apple-button"
+            onClick={handleAppleSignIn}
+            disabled={loading}
+          >
+            <img src="/apple_logo.png" alt="Apple" className="button-icon" />
+            <span>Apple로 로그인</span>
+          </button>
+
           {/* 비회원 사용 버튼 */}
           <button 
             className="signin-button guest-button"
             onClick={handleContinueAsGuest}
             disabled={loading}
           >
+            <span className="material-icons">person_outline</span>
             <span>비회원으로 계속하기</span>
           </button>
         </div>
@@ -108,7 +113,7 @@ function SignInPage() {
 
         <div className="terms-section">
           <p>
-            로그인 시 <a href="#">이용약관</a> 및 <a href="#">개인정보 처리방침</a>에 동의하게 됩니다.
+            로그인 시 <a href="#" onClick={(e) => e.preventDefault()}>이용약관</a> 및 <a href="#" onClick={(e) => e.preventDefault()}>개인정보 처리방침</a>에 동의하게 됩니다.
           </p>
         </div>
       </div>

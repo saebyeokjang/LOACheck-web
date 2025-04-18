@@ -1,5 +1,5 @@
 // src/components/Layout.js - 레이아웃 컴포넌트
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import '../styles/Layout.css';
@@ -8,12 +8,24 @@ function Layout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // 사용자 정보 로딩
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    setUser(currentUser);
+  }, []);
 
   const handleSignOut = async () => {
-    const result = await AuthService.signOut();
-    if (result.success) {
-      navigate('/signin');
-    } else {
+    try {
+      const result = await AuthService.signOut();
+      if (result.success) {
+        navigate('/signin');
+      } else {
+        alert('로그아웃 중 오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('로그아웃 오류:', error);
       alert('로그아웃 중 오류가 발생했습니다.');
     }
   };
@@ -36,9 +48,11 @@ function Layout({ children }) {
           <h1>LOA Check Web</h1>
         </div>
         <div className="header-right">
-          <button className="signout-button" onClick={handleSignOut}>
-            <span className="material-icons">logout</span>
-          </button>
+          {user && (
+            <button className="signout-button" onClick={handleSignOut} title="로그아웃">
+              <span className="material-icons">logout</span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -47,7 +61,7 @@ function Layout({ children }) {
         <div className="menu-header">
           <div className="user-info">
             <span className="material-icons">account_circle</span>
-            <span>{AuthService.getCurrentUser()?.displayName || '사용자'}</span>
+            <span>{user?.displayName || '사용자'}</span>
           </div>
           <button className="close-menu" onClick={() => setIsMenuOpen(false)}>
             <span className="material-icons">close</span>

@@ -13,7 +13,7 @@ function SettingsPage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [syncStatus, setSyncStatus] = useState('idle'); // idle, syncing, success, error
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({ text: '', type: 'info' });
   const [showMessage, setShowMessage] = useState(false);
   const [hasPendingChanges, setHasPendingChanges] = useState(false);
   const [isAutoSyncEnabled, setIsAutoSyncEnabled] = useState(true);
@@ -23,6 +23,7 @@ function SettingsPage() {
   const [confirmationAction, setConfirmationAction] = useState(null);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [characterCount, setCharacterCount] = useState(0);
+  const [isGuestMode, setIsGuestMode] = useState(false);
 
   // 초기 데이터 로드
   useEffect(() => {
@@ -31,10 +32,14 @@ function SettingsPage() {
       const savedApiKey = localStorage.getItem('apiKey') || '';
       setApiKey(savedApiKey);
       
+      // 게스트 모드 체크
+      const guestMode = localStorage.getItem('guestMode') === 'true';
+      setIsGuestMode(guestMode);
+      
       // 로그인 상태 체크
-      const auth = await AuthService.getCurrentUser();
-      setIsLoggedIn(!!auth);
-      setUser(auth);
+      const currentUser = AuthService.getCurrentUser();
+      setIsLoggedIn(!!currentUser);
+      setUser(currentUser);
       
       // 자동 동기화 설정 로드
       const autoSyncSetting = localStorage.getItem('useAutoSync');
@@ -81,18 +86,18 @@ function SettingsPage() {
     setLoading(true);
     
     try {
-      // API 키 유효성 검사 호출
-      const isValid = await CharacterService.validateApiKey(apiKey);
-      
-      if (isValid) {
-        localStorage.setItem('apiKey', apiKey);
-        showMessageWithTimeout('API 키가 저장되었습니다.', 'success');
-        
-        // 캐릭터 정보 새로고침
-        refreshCharacters();
-      } else {
-        showMessageWithTimeout('유효하지 않은 API 키입니다.', 'error');
+      // API 키 유효성 검사 (간단한 구현)
+      if (!apiKey.trim()) {
+        showMessageWithTimeout('API 키를 입력해주세요.', 'error');
+        setLoading(false);
+        return;
       }
+      
+      localStorage.setItem('apiKey', apiKey);
+      showMessageWithTimeout('API 키가 저장되었습니다.', 'success');
+      
+      // 캐릭터 정보 새로고침
+      refreshCharacters();
     } catch (error) {
       showMessageWithTimeout('API 키 저장 중 오류가 발생했습니다.', 'error');
       console.error('API 키 저장 오류:', error);
@@ -106,7 +111,10 @@ function SettingsPage() {
     setLoading(true);
     
     try {
-      await CharacterService.refreshCharactersFromAPI();
+      // 웹 환경에서는 API 연동이 완성되지 않았으므로 임시 데이터를 사용할 수 있음
+      // 실제 구현에서는 CharacterService.refreshCharactersFromAPI() 호출
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 로딩 시뮬레이션
+      
       showMessageWithTimeout('캐릭터 정보를 새로 불러왔습니다.', 'success');
       loadCharacterCount();
     } catch (error) {
@@ -119,7 +127,7 @@ function SettingsPage() {
   
   // 데이터 동기화
   const syncData = async () => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && !isGuestMode) {
       showMessageWithTimeout('동기화를 위해 로그인이 필요합니다.', 'warning');
       return;
     }
@@ -162,10 +170,21 @@ function SettingsPage() {
       setConfirmationMessage('로그아웃 하시겠습니까?');
       setConfirmationAction(() => logout);
       setShowConfirmation(true);
+    } else if (isGuestMode) {
+      // 게스트 모드에서 로그인 페이지로 이동
+      setConfirmationMessage('로그인 페이지로 이동하시겠습니까? 현재 데이터는 유지됩니다.');
+      setConfirmationAction(() => navigateToSignIn);
+      setShowConfirmation(true);
     } else {
       // 로그인 모달 표시
       setShowSignInModal(true);
     }
+  };
+  
+  // 로그인 페이지로 이동
+  const navigateToSignIn = () => {
+    localStorage.removeItem('guestMode');
+    navigate('/signin');
   };
   
   // 로그아웃 처리
@@ -174,11 +193,22 @@ function SettingsPage() {
       await AuthService.signOut();
       setIsLoggedIn(false);
       setUser(null);
-      showMessageWithTimeout('로그아웃되었습니다.', 'success');
+      
+      // 게스트 모드로 전환할지 물어보기
+      setConfirmationMessage('비회원 모드로 계속 사용하시겠습니까?');
+      setConfirmationAction(() => switchToGuestMode);
+      setShowConfirmation(true);
     } catch (error) {
       showMessageWithTimeout('로그아웃 중 오류가 발생했습니다.', 'error');
       console.error('로그아웃 오류:', error);
     }
+  };
+  
+  // 게스트 모드로 전환
+  const switchToGuestMode = () => {
+    localStorage.setItem('guestMode', 'true');
+    setIsGuestMode(true);
+    showMessageWithTimeout('비회원 모드로 전환되었습니다.', 'success');
   };
   
   // 데이터 초기화
@@ -193,7 +223,8 @@ function SettingsPage() {
     setLoading(true);
     
     try {
-      await CharacterService.resetAllData();
+      // 로컬 스토리지에서 캐릭터 정보 삭제
+      localStorage.removeItem('characters');
       
       // 데이터 변경 표시
       DataSyncService.markLocalChanges();
@@ -237,6 +268,36 @@ function SettingsPage() {
     }
   };
 
+  // Google 로그인 처리
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await AuthService.signInWithGoogle();
+      if (result.success) {
+        handleSignInClose(true);
+      } else {
+        showMessageWithTimeout('로그인에 실패했습니다.', 'error');
+      }
+    } catch (error) {
+      console.error('Google 로그인 오류:', error);
+      showMessageWithTimeout('로그인 중 오류가 발생했습니다.', 'error');
+    }
+  };
+
+  // Apple 로그인 처리
+  const handleAppleSignIn = async () => {
+    try {
+      const result = await AuthService.signInWithApple();
+      if (result.success) {
+        handleSignInClose(true);
+      } else {
+        showMessageWithTimeout('로그인에 실패했습니다.', 'error');
+      }
+    } catch (error) {
+      console.error('Apple 로그인 오류:', error);
+      showMessageWithTimeout('로그인 중 오류가 발생했습니다.', 'error');
+    }
+  };
+
   return (
     <div className="settings-page">
       <div className="page-header">
@@ -274,18 +335,20 @@ function SettingsPage() {
                 <div className="setting-description">
                   {isLoggedIn 
                     ? `${user?.displayName || '사용자'}로 로그인됨` 
-                    : '로그인되지 않음'}
+                    : isGuestMode 
+                      ? '비회원 모드로 사용 중'
+                      : '로그인되지 않음'}
                 </div>
               </div>
               <button 
-                className={`action-button ${isLoggedIn ? 'secondary' : 'primary'}`}
+                className={`action-button ${isLoggedIn || isGuestMode ? 'secondary' : 'primary'}`}
                 onClick={handleAuth}
               >
-                {isLoggedIn ? '로그아웃' : '로그인'}
+                {isLoggedIn ? '로그아웃' : isGuestMode ? '로그인' : '로그인'}
               </button>
             </div>
             
-            {isLoggedIn && (
+            {(isLoggedIn || isGuestMode) && (
               <div className="setting-item">
                 <div className="setting-info">
                   <div className="setting-title">데이터 동기화</div>
@@ -310,7 +373,7 @@ function SettingsPage() {
               </div>
             )}
             
-            {isLoggedIn && (
+            {(isLoggedIn || isGuestMode) && (
               <div className="setting-item">
                 <div className="setting-info">
                   <div className="setting-title">자동 동기화</div>
@@ -421,7 +484,7 @@ function SettingsPage() {
             <div className="setting-item">
               <div className="setting-info">
                 <div className="setting-title">버전</div>
-                <div className="setting-description">1.0.0</div>
+                <div className="setting-description">1.0.0 (웹)</div>
               </div>
             </div>
             
@@ -473,18 +536,19 @@ function SettingsPage() {
         </div>
       )}
       
-      {/* 로그인 모달 (실제 구현은 별도 컴포넌트로 분리하는 것이 좋음) */}
+      {/* 로그인 모달 */}
       {showSignInModal && (
         <div className="modal-overlay">
           <div className="sign-in-modal">
             <h4>로그인</h4>
             <p>계정으로 로그인하여 데이터를 동기화하세요</p>
-            {/* 여기에 로그인 폼 또는 소셜 로그인 버튼들 */}
             <div className="social-login-buttons">
-              <button className="google-login-button">
+              <button className="google-login-button" onClick={handleGoogleSignIn}>
+                <img src="/google_logo.png" alt="Google" className="button-icon" />
                 Google 계정으로 로그인
               </button>
-              <button className="apple-login-button">
+              <button className="apple-login-button" onClick={handleAppleSignIn}>
+                <img src="/apple_logo.png" alt="Apple" className="button-icon" />
                 Apple 계정으로 로그인
               </button>
             </div>

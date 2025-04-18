@@ -56,7 +56,7 @@ function GoldSummaryPage() {
           earnedGold: 0,
           completed: 0,
           total: 0,
-          isGoldDisabled: gate.isGoldDisabled
+          isGoldDisabled: !!gate.isGoldDisabled
         };
       }
       
@@ -64,10 +64,11 @@ function GoldSummaryPage() {
       raidGroups[gate.raid].total += 1;
       
       if (!gate.isGoldDisabled) {
-        raidGroups[gate.raid].totalGold += gate.goldReward;
+        const goldReward = gate.goldReward || 0;
+        raidGroups[gate.raid].totalGold += goldReward;
         
         if (gate.isCompleted) {
-          raidGroups[gate.raid].earnedGold += gate.goldReward;
+          raidGroups[gate.raid].earnedGold += goldReward;
           raidGroups[gate.raid].completed += 1;
         }
       }
@@ -86,7 +87,12 @@ function GoldSummaryPage() {
     
     // 추가 골드 정보 적용
     try {
-      const additionalGoldMap = JSON.parse(character.additionalGoldMap || "{}");
+      let additionalGoldMap = {};
+      try {
+        additionalGoldMap = JSON.parse(character.additionalGoldMap || "{}");
+      } catch {
+        additionalGoldMap = {};
+      }
       
       sortedRaids.forEach(raid => {
         const additionalGold = additionalGoldMap[raid.name] || 0;
@@ -232,7 +238,7 @@ function GoldSummaryPage() {
                           <div 
                             key={index}
                             className={`gate ${gate.isCompleted ? 'completed' : ''}`}
-                            title={`${gate.raid} ${gate.gate + 1}관문 (${gate.difficulty})`}
+                            title={`${gate.raid} ${gate.gate + 1}관문 (${gate.difficulty || '노멀'})`}
                           >
                             {gate.gate + 1}
                           </div>

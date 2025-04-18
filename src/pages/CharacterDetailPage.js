@@ -4,6 +4,13 @@ import { useParams, Link } from 'react-router-dom';
 import CharacterService from '../services/CharacterService';
 import '../styles/CharacterDetailPage.css';
 
+// 휴식 게이지 최대값 정의
+const REST_MAX_POINTS = {
+  "카오스 던전": 200,
+  "가디언 토벌": 200,
+  "에포나 의뢰": 100
+};
+
 function CharacterDetailPage() {
   const { characterName } = useParams();
   const [character, setCharacter] = useState(null);
@@ -79,6 +86,15 @@ function CharacterDetailPage() {
     }));
   };
 
+  // 휴식 게이지 색상 계산 함수
+  const getRestingColor = (current, max) => {
+    const percentage = max > 0 ? current / max : 0;
+    if (percentage < 0.25) return '#4caf50';
+    if (percentage < 0.5) return '#8bc34a';
+    if (percentage < 0.75) return '#ffc107';
+    return '#ff9800';
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -148,35 +164,40 @@ function CharacterDetailPage() {
             </div>
             
             <div className="tasks-list">
-              {character.dailyTasks.map((task, index) => (
-                <div className="task-item" key={index}>
-                  <div className="task-header">
-                    <span className="task-name">{formatTaskName(task.type)}</span>
-                    <span className="task-status">
-                      {task.type === '에포나 의뢰' 
-                        ? `${task.completionCount}/3` 
-                        : task.completionCount > 0 ? '완료' : '미완료'}
-                    </span>
+              {character.dailyTasks.map((task, index) => {
+                // 컨텐츠별 휴식 게이지 최대값 설정
+                const maxRestingPoints = task.maxRestingPoints || REST_MAX_POINTS[task.type] || 100;
+                
+                return (
+                  <div className="task-item" key={index}>
+                    <div className="task-header">
+                      <span className="task-name">{formatTaskName(task.type)}</span>
+                      <span className="task-status">
+                        {task.type === '에포나 의뢰' 
+                          ? `${task.completionCount || 0}/3` 
+                          : (task.completionCount || 0) > 0 ? '완료' : '미완료'}
+                      </span>
+                    </div>
+                    
+                    <div className="rest-bonus-bar">
+                      <div 
+                        className="rest-filled"
+                        style={{ 
+                          width: `${maxRestingPoints > 0 ? (task.restingPoints / maxRestingPoints) * 100 : 0}%`,
+                          backgroundColor: getRestingColor(task.restingPoints, maxRestingPoints)
+                        }}
+                      ></div>
+                    </div>
+                    
+                    <div className="rest-info">
+                      <span className="material-icons small">hotel</span>
+                      <span className="rest-text">
+                        {task.restingPoints || 0}/{maxRestingPoints}
+                      </span>
+                    </div>
                   </div>
-                  
-                  <div className="rest-bonus-bar">
-                    <div 
-                      className="rest-filled"
-                      style={{ 
-                        width: `${(task.restingPoints / (task.type === '에포나 의뢰' ? 100 : 200)) * 100}%`,
-                        backgroundColor: getRestingColor(task.restingPoints, task.type === '에포나 의뢰' ? 100 : 200)
-                      }}
-                    ></div>
-                  </div>
-                  
-                  <div className="rest-info">
-                    <span className="material-icons small">hotel</span>
-                    <span className="rest-text">
-                      {task.restingPoints}/{task.type === '에포나 의뢰' ? 100 : 200}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -209,7 +230,7 @@ function CharacterDetailPage() {
                       >
                         <div className="gate-info">
                           <span className="gate-number">{gate.gate + 1}관문</span>
-                          <span className="gate-difficulty">{gate.difficulty}</span>
+                          <span className="gate-difficulty">{gate.difficulty || '노멀'}</span>
                         </div>
                         
                         <div className="gate-status">
@@ -223,7 +244,7 @@ function CharacterDetailPage() {
                         {character.isGoldEarner && !gate.isGoldDisabled && (
                           <div className="gate-gold">
                             <span className="material-icons gold-icon">monetization_on</span>
-                            <span className="gold-amount">{gate.goldReward}G</span>
+                            <span className="gold-amount">{gate.goldReward || 0}G</span>
                           </div>
                         )}
                       </div>
@@ -245,15 +266,6 @@ function CharacterDetailPage() {
       </div>
     </div>
   );
-}
-
-// 휴식 게이지 색상 계산 함수
-function getRestingColor(current, max) {
-  const percentage = current / max;
-  if (percentage < 0.25) return '#4caf50';
-  if (percentage < 0.5) return '#8bc34a';
-  if (percentage < 0.75) return '#ffc107';
-  return '#ff9800';
 }
 
 export default CharacterDetailPage;

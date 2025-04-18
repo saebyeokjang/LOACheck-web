@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 import CharacterService from '../services/CharacterService';
 import '../styles/HomePage.css';
 
+// 휴식 게이지 최대값 정의
+const REST_MAX_POINTS = {
+  "카오스 던전": 200,
+  "가디언 토벌": 200,
+  "에포나 의뢰": 100
+};
+
 function HomePage() {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,7 +71,7 @@ function HomePage() {
 
   // 주간 레이드 완료도 계산
   const calculateRaidCompletion = (raidGates) => {
-    if (!raidGates || raidGates.length === 0) return { completed: 0, total: 0 };
+    if (!raidGates || raidGates.length === 0) return { completed: 0, total: 0, percentage: 0 };
     
     const completedGates = raidGates.filter(gate => gate.isCompleted).length;
     return {
@@ -76,7 +83,7 @@ function HomePage() {
 
   // 일일 숙제 완료도 계산
   const calculateDailyCompletion = (dailyTasks) => {
-    if (!dailyTasks || dailyTasks.length === 0) return { completed: 0, total: 0 };
+    if (!dailyTasks || dailyTasks.length === 0) return { completed: 0, total: 0, percentage: 0 };
     
     let completed = 0;
     let total = 0;
@@ -84,7 +91,7 @@ function HomePage() {
     dailyTasks.forEach(task => {
       switch (task.type) {
         case '에포나 의뢰':
-          completed += task.completionCount;
+          completed += task.completionCount || 0;
           total += 3; // 에포나는 최대 3회
           break;
         default:
@@ -96,8 +103,17 @@ function HomePage() {
     return {
       completed,
       total,
-      percentage: Math.round((completed / total) * 100)
+      percentage: total > 0 ? Math.round((completed / total) * 100) : 0
     };
+  };
+
+  // 휴식 게이지 색상 계산 함수
+  const getRestingColor = (current, max) => {
+    const percentage = max > 0 ? current / max : 0;
+    if (percentage < 0.25) return '#4caf50';
+    if (percentage < 0.5) return '#8bc34a';
+    if (percentage < 0.75) return '#ffc107';
+    return '#ff9800';
   };
 
   if (loading) {
@@ -206,38 +222,43 @@ function HomePage() {
                 </div>
                 
                 <div className="tasks-container">
-                  {currentCharacter.dailyTasks.map((task, index) => (
-                    <div className="task-item" key={index}>
-                      <div className="task-header">
-                        <span className="task-name">
-                          {formatTaskName(task.type, currentCharacter.level)}
-                        </span>
+                  {currentCharacter.dailyTasks.map((task, index) => {
+                    // 컨텐츠별 휴식 게이지 최대값 설정
+                    const maxRestingPoints = task.maxRestingPoints || REST_MAX_POINTS[task.type] || 100;
+                    
+                    return (
+                      <div className="task-item" key={index}>
+                        <div className="task-header">
+                          <span className="task-name">
+                            {formatTaskName(task.type, currentCharacter.level)}
+                          </span>
+                          
+                          <span className="task-completion">
+                            {task.type === '에포나 의뢰' 
+                              ? `${task.completionCount}/3` 
+                              : task.completionCount > 0 ? '완료' : '미완료'}
+                          </span>
+                        </div>
                         
-                        <span className="task-completion">
-                          {task.type === '에포나 의뢰' 
-                            ? `${task.completionCount}/3` 
-                            : task.completionCount > 0 ? '완료' : '미완료'}
-                        </span>
+                        <div className="resting-points-bar">
+                          <div 
+                            className="resting-filled"
+                            style={{ 
+                              width: `${maxRestingPoints > 0 ? (task.restingPoints / maxRestingPoints) * 100 : 0}%`,
+                              backgroundColor: getRestingColor(task.restingPoints, maxRestingPoints)
+                            }}
+                          ></div>
+                        </div>
+                        
+                        <div className="resting-info">
+                          <span className="material-icons small">hotel</span>
+                          <span className="resting-text">
+                            {task.restingPoints}/{maxRestingPoints}
+                          </span>
+                        </div>
                       </div>
-                      
-                      <div className="resting-points-bar">
-                        <div 
-                          className="resting-filled"
-                          style={{ 
-                            width: `${(task.restingPoints / task.type.maxRestingPoints) * 100}%`,
-                            backgroundColor: getRestingColor(task.restingPoints, task.type.maxRestingPoints)
-                          }}
-                        ></div>
-                      </div>
-                      
-                      <div className="resting-info">
-                        <span className="material-icons small">hotel</span>
-                        <span className="resting-text">
-                          {task.restingPoints}/{task.type.maxRestingPoints}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -267,7 +288,7 @@ function HomePage() {
                       <span>
                         {currentCharacter.raidGates
                           .filter(gate => gate.isCompleted && !gate.isGoldDisabled)
-                          .reduce((sum, gate) => sum + gate.goldReward, 0)} G 획득
+                          .reduce((sum, gate) => sum + (gate.goldReward || 0), 0)} G 획득
                       </span>
                     </p>
                   )}
@@ -306,15 +327,6 @@ function HomePage() {
       </div>
     </div>
   );
-}
-
-// 휴식 게이지 색상 계산 함수
-function getRestingColor(current, max) {
-  const percentage = current / max;
-  if (percentage < 0.25) return '#4caf50';
-  if (percentage < 0.5) return '#8bc34a';
-  if (percentage < 0.75) return '#ffc107';
-  return '#ff9800';
 }
 
 export default HomePage;
