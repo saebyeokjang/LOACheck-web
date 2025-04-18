@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 인증된 사용자인지 확인하는 함수
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // 자신의 문서인지 확인하는 함수
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // 사용자 경로
+    match /users/{userId} {
+      // 기본 사용자 정보
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+      
+      // 친구 목록
+      match /friends/{friendId} {
+        // 친구 목록은 자신만 읽기 가능
+        allow read: if isAuthenticated() && isOwner(userId);
+        // 친구 추가는 본인 또는 초대받은 사람만 가능
+        allow create, update: if isAuthenticated() && (isOwner(userId) || request.auth.uid == friendId);
+        // 친구 삭제는 본인 또는 친구 중 누구나 가능하도록 수정
+        allow delete: if isAuthenticated() && (isOwner(userId) || request.auth.uid == friendId);
+      }
+      
+      // 받은 친구 요청
+      match /friendRequests/{fromId} {
+        // 자신의 수신함은 읽기 가능, 발신자도 읽기 가능
+        allow read: if isAuthenticated() && (isOwner(userId) || request.auth.uid == fromId);
+        // 요청을 받는 사람 문서에 추가되는 것은 발신자가 할 수 있어야 함
+        allow create: if isAuthenticated() && request.auth.uid == fromId;
+        // 수신자와 발신자 모두 요청 수정 가능
+        allow update: if isAuthenticated() && (isOwner(userId) || request.auth.uid == fromId);
+        // 수신자와 발신자 모두 삭제 가능
+        allow delete: if isAuthenticated() && (isOwner(userId) || request.auth.uid == fromId);
+      }
+      
+      // 보낸 친구 요청
+      match /sentRequests/{toId} {
+        // 자신의 발신함은 읽기 가능, 수신자도 읽기 가능
+        allow read: if isAuthenticated() && (isOwner(userId) || request.auth.uid == toId);
+        // 발신자 자신만 생성 가능
+        allow create: if isAuthenticated() && isOwner(userId);
+        // 수신자(요청 받은 사람)와 발신자 모두 상태 업데이트 가능
+        allow update: if isAuthenticated() && (isOwner(userId) || request.auth.uid == toId);
+        // 발신자와 수신자 모두 삭제 가능
+        allow delete: if isAuthenticated() && (isOwner(userId) || request.auth.uid == toId);
+      }
+      
+      // 캐릭터 정보
+      match /characters/{characterName} {
+        // 본인과 친구만 읽기 가능
+        allow read: if isAuthenticated() && (isOwner(userId) || exists(/databases/$(database)/documents/users/$(request.auth.uid)/friends/$(userId)));
+        // 쓰기는 본인만 가능
+        allow write: if isAuthenticated() && isOwner(userId);
+      }
+    }
+    
+    // 캐릭터 이름 검색 컬렉션
+    match /characterNames/{characterName} {
+      // 모든 인증된 사용자가 읽기 가능
+      allow read: if isAuthenticated();
+      // 본인만 생성 가능
+      allow create: if isAuthenticated();
+      // 본인만 수정/삭제 가능
+      allow update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

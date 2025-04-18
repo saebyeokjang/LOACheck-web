@@ -1,0 +1,392 @@
+/* src/styles/HomePage.css - 홈페이지 CSS */
+
+.home-page {
+    padding-bottom: 24px;
+  }
+  
+  /* 골드 요약 카드 */
+  .gold-summary-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .gold-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .gold-summary-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  .view-details {
+    display: flex;
+    align-items: center;
+    color: #1976d2;
+    font-size: 14px;
+  }
+  
+  .view-details .material-icons {
+    font-size: 18px;
+    margin-left: 4px;
+  }
+  
+  .gold-summary-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .gold-stat {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .gold-label {
+    display: block;
+    font-size: 14px;
+    color: #757575;
+    margin-bottom: 4px;
+  }
+  
+  .gold-value {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  
+  .gold-value.earned {
+    color: #4caf50;
+  }
+  
+  .gold-value.total {
+    color: #ff9800;
+  }
+  
+  .gold-divider {
+    width: 1px;
+    height: 40px;
+    background-color: #e0e0e0;
+    margin: 0 16px;
+  }
+  
+  /* 캐릭터 슬라이더 */
+  .character-slider {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .character-navigation {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  .nav-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .character-title {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .character-title h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  
+  .character-title p {
+    font-size: 14px;
+    color: #757575;
+    margin-bottom: 4px;
+  }
+  
+  .character-level {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 8px;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+  
+  .gold-earner-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 16px;
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ff9800;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  
+  .gold-earner-badge .material-icons {
+    font-size: 16px;
+    margin-right: 4px;
+  }
+  
+  /* 컨텐츠 진행 상황 */
+  .content-progress {
+    margin-top: 16px;
+  }
+  
+  .progress-section {
+    margin-bottom: 24px;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .section-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  .completion-badge {
+    padding: 4px 8px;
+    border-radius: 16px;
+    background-color: #e8f5e9;
+    color: #4caf50;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .task-item {
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .task-name {
+    font-weight: 500;
+  }
+  
+  .task-completion {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+  }
+  
+  .resting-points-bar {
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    overflow: hidden;
+  }
+  
+  .resting-filled {
+    height: 100%;
+    border-radius: 3px;
+  }
+  
+  .resting-info {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #757575;
+  }
+  
+  .resting-info .material-icons.small {
+    font-size: 14px;
+    margin-right: 4px;
+  }
+  
+  .raid-summary {
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .raid-summary p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .raid-summary p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .raid-summary .material-icons {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+  
+  .view-details-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1976d2;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .view-details-link .material-icons {
+    margin-left: 4px;
+    font-size: 18px;
+  }
+  
+  /* 캐릭터 바로가기 */
+  .character-quick-nav {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+  
+  .character-quick-nav h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  
+  .character-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  
+  /* 스크롤바 숨기기 */
+  .character-list::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .character-list::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 3px;
+  }
+  
+  .character-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    transition: background-color 0.2s;
+  }
+  
+  .character-button.active {
+    background-color: #e3f2fd;
+  }
+  
+  .character-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1976d2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .character-quick-info {
+    text-align: center;
+  }
+  
+  .character-name {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+  }
+  
+  .character-level {
+    font-size: 12px;
+    color: #757575;
+  }
+  
+  /* 빈 캐릭터 상태 */
+  .empty-characters {
+    text-align: center;
+    padding: 48px 16px;
+  }
+  
+  .empty-characters .material-icons {
+    font-size: 64px;
+    color: #bdbdbd;
+    margin-bottom: 16px;
+  }
+  
+  .empty-characters h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .empty-characters p {
+    color: #757575;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .settings-link {
+    display: inline-flex;
+    align-items: center;
+    background-color: #1976d2;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  .settings-link .material-icons {
+    margin-right: 8px;
+    font-size: 18px;
+    color: white;
+  }

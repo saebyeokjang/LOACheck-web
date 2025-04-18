@@ -1,0 +1,534 @@
+/* SettingsPage.css */
+/* LOACheck 웹 버전을 위한 설정 페이지 스타일 */
+
+.settings-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  
+  .page-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* 알림 메시지 */
+  .message-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;
+    z-index: 1000;
+    max-width: 400px;
+  }
+  
+  .message-toast .material-icons {
+    margin-right: 8px;
+  }
+  
+  .message-toast.success {
+    background-color: #e6f7ef;
+    color: #00a86b;
+  }
+  
+  .message-toast.error {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .message-toast.warning {
+    background-color: #fff8e1;
+    color: #ff9800;
+  }
+  
+  .message-toast.info {
+    background-color: #e3f2fd;
+    color: #0066ff;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  /* 오프라인 알림 */
+  .offline-alert {
+    display: flex;
+    align-items: center;
+    background-color: #fff8e1;
+    color: #ff9800;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .offline-alert .material-icons {
+    margin-right: 8px;
+  }
+  
+  /* 설정 섹션들 */
+  .settings-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .settings-section {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  
+  .settings-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .setting-item:last-child {
+    border-bottom: none;
+  }
+  
+  .setting-item.column {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .setting-info {
+    flex: 1;
+  }
+  
+  .setting-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  
+  .setting-description {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .setting-description.danger {
+    color: #d32f2f;
+  }
+  
+  .setting-description a {
+    color: #0066ff;
+    text-decoration: none;
+  }
+  
+  .setting-description a:hover {
+    text-decoration: underline;
+  }
+  
+  /* 버튼 스타일 */
+  .action-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+  }
+  
+  .action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .action-button.primary {
+    background-color: #0066ff;
+    color: white;
+  }
+  
+  .action-button.primary:hover:not(:disabled) {
+    background-color: #0052cc;
+  }
+  
+  .action-button.secondary {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .action-button.secondary:hover:not(:disabled) {
+    background-color: #e0e0e0;
+  }
+  
+  .action-button.danger {
+    background-color: #d32f2f;
+    color: white;
+  }
+  
+  .action-button.danger:hover:not(:disabled) {
+    background-color: #b71c1c;
+  }
+  
+  .action-button .material-icons {
+    margin-right: 6px;
+  }
+  
+  /* API 키 입력 */
+  .api-key-input {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .api-key-input input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .api-key-input input:focus {
+    outline: none;
+    border-color: #0066ff;
+  }
+  
+  /* 동기화 버튼 */
+  .sync-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    background-color: #e3f2fd;
+    color: #0066ff;
+  }
+  
+  .sync-button:hover:not(:disabled) {
+    background-color: #bbdefb;
+  }
+  
+  .sync-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .sync-button.syncing {
+    background-color: #e3f2fd;
+    color: #0066ff;
+  }
+  
+  .sync-button.success {
+    background-color: #e6f7ef;
+    color: #00a86b;
+  }
+  
+  .sync-button.error {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .sync-button .material-icons {
+    margin-right: 6px;
+  }
+  
+  /* 스피너 애니메이션 */
+  .spinning {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* 토글 스위치 */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+  
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ddd;
+    transition: .4s;
+    border-radius: 24px;
+  }
+  
+  .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  
+  input:checked + .toggle-slider {
+    background-color: #0066ff;
+  }
+  
+  input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+  }
+  
+  /* 모달 */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .confirmation-modal, .sign-in-modal {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .confirmation-modal h4, .sign-in-modal h4 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  /* 소셜 로그인 버튼 */
+  .social-login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .google-login-button, .apple-login-button {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .google-login-button {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .google-login-button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .apple-login-button {
+    background-color: #000;
+    color: white;
+    border: 1px solid #000;
+  }
+  
+  .apple-login-button:hover {
+    background-color: #333;
+  }
+  
+  /* 반응형 디자인 */
+  @media (max-width: 600px) {
+    .setting-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    
+    .setting-item:not(.column) button,
+    .setting-item:not(.column) .toggle-switch {
+      align-self: flex-start;
+    }
+    
+    .api-key-input {
+      flex-direction: column;
+    }
+    
+    .message-toast {
+      max-width: 90%;
+      left: 5%;
+      right: 5%;
+    }
+  }
+  
+  /* 다크 모드 지원 */
+  @media (prefers-color-scheme: dark) {
+    .settings-page {
+      background-color: #121212;
+    }
+    
+    .page-header {
+      border-bottom-color: #2a2a2a;
+    }
+    
+    .page-header h2,
+    .section-title {
+      color: #e1e1e1;
+    }
+    
+    .settings-card {
+      background-color: #1e1e1e;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .setting-item {
+      border-bottom-color: #2a2a2a;
+    }
+    
+    .setting-title {
+      color: #e1e1e1;
+    }
+    
+    .setting-description {
+      color: #aaa;
+    }
+    
+    .setting-description.danger {
+      color: #ff6b6b;
+    }
+    
+    .action-button.secondary {
+      background-color: #333;
+      color: #e1e1e1;
+    }
+    
+    .action-button.secondary:hover:not(:disabled) {
+      background-color: #444;
+    }
+    
+    .api-key-input input {
+      background-color: #2a2a2a;
+      border-color: #444;
+      color: #e1e1e1;
+    }
+    
+    .toggle-slider {
+      background-color: #444;
+    }
+    
+    .confirmation-modal, .sign-in-modal {
+      background-color: #1e1e1e;
+    }
+    
+    .confirmation-modal h4, .sign-in-modal h4 {
+      color: #e1e1e1;
+    }
+    
+    .google-login-button {
+      background-color: #2a2a2a;
+      color: #e1e1e1;
+      border-color: #444;
+    }
+    
+    .google-login-button:hover {
+      background-color: #333;
+    }
+  }
+  
+  /* 애니메이션 */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .settings-section {
+    animation: fadeIn 0.3s ease forwards;
+  }
+  
+  .settings-section:nth-child(1) { animation-delay: 0.05s; }
+  .settings-section:nth-child(2) { animation-delay: 0.1s; }
+  .settings-section:nth-child(3) { animation-delay: 0.15s; }
+  .settings-section:nth-child(4) { animation-delay: 0.2s; }

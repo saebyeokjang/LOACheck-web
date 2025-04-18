@@ -1,0 +1,292 @@
+/* src/styles/CharacterDetailPage.css - 캐릭터 상세 페이지 CSS */
+
+.character-detail-page {
+    padding-bottom: 24px;
+  }
+  
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #333;
+    background-color: #f5f5f5;
+    margin-right: 8px;
+  }
+  
+  .back-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .character-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .character-header {
+    margin-bottom: 16px;
+  }
+  
+  .character-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .character-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .server-class {
+    font-size: 14px;
+    color: #757575;
+  }
+  
+  .level {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 8px;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border-radius: 4px;
+  }
+  
+  .gold-earner-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 16px;
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ff9800;
+    font-size: 12px;
+  }
+  
+  .gold-earner-badge .material-icons {
+    font-size: 16px;
+    margin-right: 4px;
+  }
+  
+  /* 섹션 공통 스타일 */
+  .section {
+    margin-top: 24px;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .section-header h4 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  
+  .completion-badge {
+    padding: 4px 8px;
+    border-radius: 16px;
+    background-color: #e8f5e9;
+    color: #4caf50;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  /* 일일 숙제 스타일 */
+  .tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .task-item {
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .task-name {
+    font-weight: 500;
+  }
+  
+  .task-status {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+  }
+  
+  .rest-bonus-bar {
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    overflow: hidden;
+  }
+  
+  .rest-filled {
+    height: 100%;
+    border-radius: 3px;
+  }
+  
+  .rest-info {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #757575;
+  }
+  
+  .rest-info .material-icons.small {
+    font-size: 14px;
+    margin-right: 4px;
+  }
+  
+  /* 레이드 스타일 */
+  .raids-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .raid-item {
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  
+  .raid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .raid-name {
+    font-weight: 500;
+  }
+  
+  .raid-progress {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+  }
+  
+  .gates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+  }
+  
+  .gate-item {
+    background-color: white;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .gate-item.completed {
+    background-color: #f1f8e9;
+    border-color: #c5e1a5;
+  }
+  
+  .gate-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .gate-number {
+    font-weight: 500;
+  }
+  
+  .gate-difficulty {
+    font-size: 12px;
+    color: #757575;
+  }
+  
+  .gate-status {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .status-icon {
+    font-size: 24px;
+    color: #bdbdbd;
+  }
+  
+  .status-icon.completed {
+    color: #4caf50;
+  }
+  
+  .gate-gold {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #ff9800;
+  }
+  
+  .gold-icon {
+    font-size: 16px;
+    margin-right: 4px;
+  }
+  
+  .no-gold-warning {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #fff3e0;
+    border-radius: 6px;
+    margin-top: 16px;
+    color: #ff9800;
+  }
+  
+  .no-gold-warning .material-icons {
+    margin-right: 8px;
+  }
+  
+  /* 빈 상태 및 오류 스타일 */
+  .empty-character, .error-container {
+    text-align: center;
+    padding: 40px 16px;
+  }
+  
+  .empty-character .material-icons, .error-container .material-icons {
+    font-size: 64px;
+    color: #bdbdbd;
+    margin-bottom: 16px;
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    color: #333;
+  }
+  
+  .back-link .material-icons {
+    font-size: 18px;
+    margin-right: 4px;
+    color: #333;
+  }

@@ -1,0 +1,465 @@
+/* GoldSummaryPage.css */
+/* LOACheck 웹 버전을 위한 골드 요약 페이지 스타일 */
+
+.gold-summary-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  
+  .page-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* 로딩 상태 */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 102, 255, 0.1);
+    border-top-color: #0066ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* 에러 상태 */
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    text-align: center;
+  }
+  
+  .error-container .material-icons {
+    font-size: 48px;
+    color: #ff3333;
+    margin-bottom: 16px;
+  }
+  
+  .error-container p {
+    color: #666;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .retry-button {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .retry-button:hover {
+    background-color: #0052cc;
+  }
+  
+  /* 총 예상 골드 섹션 */
+  .total-gold-section {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  
+  .gold-header {
+    padding: 16px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .gold-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .gold-stats {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .gold-stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .gold-stat-item:last-child {
+    border-bottom: none;
+  }
+  
+  .stat-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .stat-value.earned {
+    color: #00cc66; /* 획득 골드는 초록색 */
+  }
+  
+  .stat-value.total {
+    color: #ff9900; /* 총 예상 골드는 주황색 */
+  }
+  
+  /* 골드 획득 캐릭터가 없는 경우 */
+  .empty-gold-earners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    text-align: center;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+  }
+  
+  .empty-gold-earners .material-icons {
+    font-size: 48px;
+    color: #ccc;
+    margin-bottom: 16px;
+  }
+  
+  .empty-gold-earners p {
+    color: #666;
+    margin-bottom: 16px;
+  }
+  
+  .character-link {
+    display: flex;
+    align-items: center;
+    color: #0066ff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: rgba(0, 102, 255, 0.1);
+    transition: background-color 0.2s ease;
+  }
+  
+  .character-link:hover {
+    background-color: rgba(0, 102, 255, 0.2);
+  }
+  
+  .character-link .material-icons {
+    font-size: 18px;
+    color: #0066ff;
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
+  
+  /* 캐릭터별 골드 내역 */
+  .character-gold-section {
+    margin-bottom: 24px;
+  }
+  
+  .character-gold-section h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 16px;
+  }
+  
+  .character-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  @media (min-width: 768px) {
+    .character-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .character-gold-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .character-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .character-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .character-details {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .character-gold {
+    display: flex;
+    align-items: center;
+  }
+  
+  .gold-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff9900;
+  }
+  
+  /* 레이드 목록 */
+  .raid-list {
+    padding: 8px;
+  }
+  
+  .raid-item {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .raid-item:last-child {
+    border-bottom: none;
+  }
+  
+  .raid-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .raid-name {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .raid-progress {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .raid-gold {
+    text-align: right;
+  }
+  
+  .gold-value.top-raid {
+    color: #ff9900;
+  }
+  
+  .gold-value.add-only {
+    color: #00cc66;
+  }
+  
+  .gold-value.disabled {
+    color: #999;
+  }
+  
+  .add-gold {
+    margin-left: 4px;
+    font-size: 12px;
+    color: #00cc66;
+  }
+  
+  .no-gold {
+    margin-left: 4px;
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* 관문 인디케이터 */
+  .gate-indicators {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .gate {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .gate.completed {
+    background-color: rgba(0, 204, 102, 0.2);
+    color: #00cc66;
+  }
+  
+  /* 안내 섹션 */
+  .info-section {
+    background-color: rgba(0, 102, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 24px;
+  }
+  
+  .info-section p {
+    margin: 0;
+    font-size: 14px;
+    color: #0066ff;
+    text-align: center;
+  }
+  
+  /* 반응형 디자인 조정 */
+  @media (max-width: 768px) {
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .character-list {
+      grid-template-columns: 1fr;
+    }
+    
+    .raid-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .raid-gold {
+      text-align: left;
+    }
+  }
+  
+  /* 다크 모드 지원 */
+  @media (prefers-color-scheme: dark) {
+    .gold-summary-page {
+      background-color: #121212;
+    }
+    
+    .page-header {
+      border-bottom-color: #2a2a2a;
+    }
+    
+    .page-header h2 {
+      color: #e1e1e1;
+    }
+    
+    .total-gold-section,
+    .character-gold-card,
+    .empty-gold-earners {
+      background-color: #1e1e1e;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .gold-header,
+    .character-header {
+      background-color: #252525;
+      border-bottom-color: #2a2a2a;
+    }
+    
+    .gold-header h3,
+    .character-gold-section h3,
+    .character-info h4,
+    .raid-name,
+    .stat-label {
+      color: #e1e1e1;
+    }
+    
+    .gold-stat-item {
+      border-bottom-color: #2a2a2a;
+    }
+    
+    .empty-gold-earners .material-icons {
+      color: #555;
+    }
+    
+    .empty-gold-earners p,
+    .character-details,
+    .raid-progress {
+      color: #aaa;
+    }
+    
+    .raid-item {
+      border-bottom-color: #2a2a2a;
+    }
+    
+    .gate {
+      background-color: #2a2a2a;
+      color: #aaa;
+    }
+    
+    .gate.completed {
+      background-color: rgba(0, 204, 102, 0.3);
+    }
+    
+    .info-section {
+      background-color: rgba(0, 102, 255, 0.15);
+    }
+  }
+  
+  /* 애니메이션 지연 효과 */
+  .character-gold-card:nth-child(1) { animation-delay: 0.05s; }
+  .character-gold-card:nth-child(2) { animation-delay: 0.1s; }
+  .character-gold-card:nth-child(3) { animation-delay: 0.15s; }
+  .character-gold-card:nth-child(4) { animation-delay: 0.2s; }
+  .character-gold-card:nth-child(5) { animation-delay: 0.25s; }
+  .character-gold-card:nth-child(6) { animation-delay: 0.3s; }
+  .character-gold-card:nth-child(7) { animation-delay: 0.35s; }
+  .character-gold-card:nth-child(8) { animation-delay: 0.4s; }
