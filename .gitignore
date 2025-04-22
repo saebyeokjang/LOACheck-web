@@ -101,4 +101,5 @@ jspm_packages/
 .sass-cache/.firebase/hosting.YnVpbGQ.cache
 
 # Ignore Firebase cache file
-.firebase/hosting.*.cache.env
+.firebase/hosting.*.cache
+.env
