@@ -6,7 +6,7 @@ import { getAnalytics } from "firebase/analytics";
 
 // Firebase 구성 정보
 const firebaseConfig = {
-  apiKey: "AIzaSyD93aPZUxYRDbq1xLoOmwxNuHKXeD4vJe8",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "loa-check.firebaseapp.com",
   projectId: "loa-check",
   storageBucket: "loa-check.firebasestorage.app",
